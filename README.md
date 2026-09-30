@@ -32,12 +32,12 @@ To ensure zero downtime during critical security assessments, the platform featu
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/your-username/NebiusDigitalTwin.git](https://github.com/your-username/NebiusDigitalTwin.git)
+git clone [https://github.com/JohannArleyCruzMendez/NebiusDigitalTwin.git](https://github.com/JohannArleyCruzMendez/NebiusDigitalTwin.git)
 cd NebiusDigitalTwin
-2. Configure appsettings.json
-Navigate to your API / Web configuration and set up your database connection and secure API keys:
 
-JSON
+2. Configure appsettings.json
+Navigate to your API configuration (NebiusDigitalTwin.API/appsettings.json) and set up your database connection and secure API keys:
+
 {
   "Logging": {
     "LogLevel": {
@@ -64,15 +64,17 @@ JSON
     }
   }
 }
+
 3. Run the Application
-Start both the backend API and the web interface from your terminal or Visual Studio:
+Start both the backend API and the web interface from your terminal:
 
 Bash
 dotnet run --project NebiusDigitalTwin.API
 dotnet run --project NebiusDigitalTwin.Web
+
 📌 Core Features
 Asset Inventory Digital Twin: Register infrastructure nodes (Web Servers, Database Servers, Firewalls, Wireless Access Points) with custom CVE vulnerabilities and network segmentation properties.
 
-AI Threat Vector Simulation: Input natural language attack scenarios (e.g., Lateral movement attack exploiting web backend to reach core database) to receive global risk levels, exact attack paths, and prioritized mitigations.
+AI Threat Vector Simulation: Input natural language attack scenarios to receive global risk levels, exact attack paths, and prioritized mitigations.
 
 Interactive Topology Mapping: Visualizes high-risk assets and network connections.
