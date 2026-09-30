@@ -1,0 +1,208 @@
+﻿@{
+    ViewData["Title"] = "Network Topology";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-diagram-3"></i> Network Topology & Digital Twin Map</h2>
+        <a asp-controller="Nodos" asp-action="Simulacion" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Threat Simulation
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Panel Izquierdo: Controles de Enlace -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-primary mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="bi bi-link-45deg"></i> Link Network Assets</h5>
+                </div>
+                <div class="card-body bg-light">
+                    <form id="vincularForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Source Node (Origin):</label>
+                            <select id="selectOrigen" class="form-select form-select-sm" required>
+                                <option value="">Select source...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold small">Target Node (Destination):</label>
+                            <select id="selectDestino" class="form-select form-select-sm" required>
+                                <option value="">Select target...</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small">Protocol:</label>
+                                <input type="text" id="inputProtocolo" class="form-control form-control-sm" value="TCP">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label fw-bold small">Port:</label>
+                                <input type="number" id="inputPuerto" class="form-control form-control-sm" value="443">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary w-100 fw-bold" onclick="vincularNodos()">
+                            <i class="bi bi-plus-circle me-1"></i> Establish Connection
+                        </button>
+                    </form>
+                    <div id="mensajeVinculo" class="mt-3 text-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Derecho: El Mapa Visual -->
+        <div class="col-md-8">
+            <div class="card shadow-sm border-success">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Live Asset Graph</h5>
+                    <button class="btn btn-sm btn-light" onclick="inicializarMapaRed()">
+                        <i class="bi bi-arrow-clockwise"></i> Refresh Map
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div id="network-container" style="width: 100%; height: 550px; background-color: #f8f9fa;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Importamos vis-network desde CDN -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    
+    <script>
+        let network = null;
+        let listaNodosGlobal = [];
+
+        async function inicializarMapaRed() {
+            try {
+                // 1. Obtenemos los nodos desde tu API
+                const response = await fetch('https://localhost:7263/api/v1/Nodos');
+                if (!response.ok) return;
+                
+                listaNodosGlobal = await response.json();
+
+                // Llenamos también los desplegables (Selects)
+                poblarSelects(listaNodosGlobal);
+
+                // 2. Transformamos los nodos al formato de vis-network
+                const nodesArray = listaNodosGlobal.map(n => {
+                    let color = '#6c757d';
+                    if (n.criticidadActivo === 'High') color = '#dc3545';
+                    if (n.criticidadActivo === 'Medium') color = '#ffc107';
+                    if (n.criticidadActivo === 'Low') color = '#198754';
+
+                    return {
+                        id: n.id,
+                        label: n.nombre,
+                        title: `Type: ${n.tipo}\nIP: ${n.red ? n.red.direccionIp : 'N/A'}`,
+                        color: color,
+                        shape: 'dot',
+                        size: 25,
+                        font: { size: 14, face: 'arial', bold: true }
+                    };
+                });
+
+                // 3. Extraemos las conexiones salientes (Edges)
+                const edgesArray = [];
+                listaNodosGlobal.forEach(n => {
+                    if (n.conexionesSalientes && n.conexionesSalientes.length > 0) {
+                        n.conexionesSalientes.forEach(c => {
+                            edgesArray.push({
+                                from: n.id,
+                                to: c.nodoDestinoId,
+                                arrows: 'to',
+                                color: { color: '#0d6efd' },
+                                width: 3,
+                                label: `${c.protocolo || 'TCP'}:${c.puerto || ''}`
+                            });
+                        });
+                    }
+                });
+
+                const container = document.getElementById('network-container');
+                const data = {
+                    nodes: new vis.DataSet(nodesArray),
+                    edges: new vis.DataSet(edgesArray)
+                };
+                
+                const options = {
+                    nodes: { borderWidth: 2, shadow: true },
+                    edges: { smooth: { type: 'cubicBezier' }, shadow: true },
+                    physics: {
+                        barnesHut: { gravitationalConstant: -3000, centralGravity: 0.3, springLength: 120 }
+                    },
+                    interaction: { hover: true }
+                };
+
+                network = new vis.Network(container, data, options);
+
+            } catch (error) {
+                console.error("Error loading network map:", error);
+            }
+        }
+
+        function poblarSelects(nodos) {
+            const selectOrigen = document.getElementById('selectOrigen');
+            const selectDestino = document.getElementById('selectDestino');
+
+            let optionsHtml = '<option value="">Select asset...</option>';
+            nodos.forEach(n => {
+                optionsHtml += `<option value="${n.id}">${n.nombre} (${n.red ? n.red.direccionIp : 'N/A'})</option>`;
+            });
+
+            selectOrigen.innerHTML = optionsHtml;
+            selectDestino.innerHTML = optionsHtml;
+        }
+
+        async function vincularNodos() {
+            const origenId = document.getElementById('selectOrigen').value;
+            const destinoId = document.getElementById('selectDestino').value;
+            const protocolo = document.getElementById('inputProtocolo').value;
+            const puerto = parseInt(document.getElementById('inputPuerto').value) || 0;
+            const mensajeDiv = document.getElementById('mensajeVinculo');
+
+            if (!origenId || !destinoId) {
+                mensajeDiv.innerHTML = '<span class="text-danger small">Please select both source and target nodes.</span>';
+                return;
+            }
+
+            if (origenId === destinoId) {
+                mensajeDiv.innerHTML = '<span class="text-danger small">A node cannot connect to itself.</span>';
+                return;
+            }
+
+            const payload = {
+                NodoOrigenId: origenId,
+                NodoDestinoId: destinoId,
+                Protocolo: protocolo,
+                Puerto: puerto
+            };
+
+            try {
+                const response = await fetch('https://localhost:7263/api/v1/Nodos/vincular', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    mensajeDiv.innerHTML = '<span class="text-success fw-bold small"><i class="bi bi-check-circle"></i> Connection established!</span>';
+                    // Recargamos el mapa para pintar la nueva flecha azul
+                    inicializarMapaRed();
+                } else {
+                    const error = await response.text();
+                    mensajeDiv.innerHTML = `<span class="text-danger small">Error: ${error}</span>`;
+                }
+            } catch (error) {
+                mensajeDiv.innerHTML = `<span class="text-danger small">Network Error: ${error.message}</span>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', inicializarMapaRed);
+    </script>
+}

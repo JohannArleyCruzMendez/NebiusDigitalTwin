@@ -1,0 +1,6 @@
+@NebiusDigitalTwin.API_HostAddress = http://localhost:5078
+
+GET {{NebiusDigitalTwin.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

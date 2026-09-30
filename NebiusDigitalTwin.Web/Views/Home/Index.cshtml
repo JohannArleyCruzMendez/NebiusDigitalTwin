@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Home - Digital Twin Security Center";
+}
+
+<div class="container py-4">
+    <!-- Hero Banner -->
+    <div class="p-5 mb-4 bg-dark text-white rounded-3 shadow">
+        <div class="container-fluid py-3">
+            <h1 class="display-5 fw-bold text-info"><i class="bi bi-shield-check me-2"></i> Digital Twin Security Center</h1>
+            <p class="col-md-8 fs-5 text-light mt-3">
+                An advanced enterprise network simulation platform driven by Artificial Intelligence. Model complex infrastructures, visualize active topologies, and predict cyber threats in real time.
+            </p>
+            <hr class="my-4 border-secondary">
+            <div class="d-flex gap-3">
+                <a asp-controller="Nodos" asp-action="Simulacion" class="btn btn-danger btn-lg fw-bold px-4">
+                    <i class="bi bi-cpu me-2"></i> Launch Threat Simulator
+                </a>
+                <a asp-controller="Nodos" asp-action="NetworkMap" class="btn btn-outline-success btn-lg fw-bold px-4">
+                    <i class="bi bi-diagram-3 me-2"></i> View Topology Map
+                </a>
+                                  
+                
+                <!-- Botón directo al escenario de demostración en el Index -->
+                 <a asp-controller="Home" asp-action="DemoScenario" class="btn btn-outline-primary btn-lg fw-bold px-4">
+                 <i class="bi bi-shield-fill-excursion me-2"></i> Demo Scenario
+                 </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="row align-items-md-stretch mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="h-100 p-4 bg-light border rounded-3 shadow-sm">
+                <h3 class="text-primary h5 fw-bold"><i class="bi bi-hdd-rack me-2"></i> Asset Digital Twin</h3>
+                <p class="small text-muted">Register enterprise infrastructure assets, define network postures, assign operating systems, and track known vulnerabilities (CVEs).</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="h-100 p-4 bg-light border rounded-3 shadow-sm">
+                <h3 class="text-success h5 fw-bold"><i class="bi bi-diagram-3 me-2"></i> Interactive Topology</h3>
+                <p class="small text-muted">Visualize live node connectivity using <code>vis-network</code> physics. Link origins and destinations dynamically via custom network protocols.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="h-100 p-4 bg-light border rounded-3 shadow-sm">
+                <h3 class="text-danger h5 fw-bold"><i class="bi bi-robot me-2"></i> AI Threat Analysis</h3>
+                <p class="small text-muted">Correlate network topologies with node criticalities to simulate lateral movements, ransomware propagation, and automated mitigations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Test Scenarios Showcase -->
+    <div class="card shadow-sm border-secondary">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="card-title mb-0"><i class="bi bi-lightbulb me-2"></i> Recommended Attack Scenarios to Test</h5>
+        </div>
+        <div class="card-body bg-white">
+            <p class="small text-muted mb-3">Copy and paste these natural language scenarios into the Threat Simulation panel to evaluate the AI engine:</p>
+            <div class="list-group small">
+                <div class="list-group-item list-group-item-action border-start border-danger border-4 mb-2 bg-light">
+                    <strong>Lateral Movement:</strong> <code>Lateral movement attack exploiting the web backend to reach the core database</code>
+                    <div class="text-muted mt-1">Tests the propagation risk between standard application servers and critical database nodes.</div>
+                </div>
+                <div class="list-group-item list-group-item-action border-start border-warning border-4 bg-light">
+                    <strong>Ransomware Propagation:</strong> <code>Ransomware infection originating at the perimeter firewall and propagating through internal services</code>
+                    <div class="text-muted mt-1">Evaluates perimeter security postures and service exposure risks across the enterprise topology.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

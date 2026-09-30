@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="NebiusDigitalTwin.API/NebiusDigitalTwin.API.csproj" />
+  <Project Path="NebiusDigitalTwin.Application/NebiusDigitalTwin.Application.csproj" />
+  <Project Path="NebiusDigitalTwin.Domain/NebiusDigitalTwin.Domain.csproj" />
+  <Project Path="NebiusDigitalTwin.Infrastructure/NebiusDigitalTwin.Infrastructure.csproj" />
+  <Project Path="NebiusDigitalTwin.Web/NebiusDigitalTwin.Web.csproj" Id="0a8c368f-024d-46f8-92c2-290204a5e5e5" />
+</Solution>

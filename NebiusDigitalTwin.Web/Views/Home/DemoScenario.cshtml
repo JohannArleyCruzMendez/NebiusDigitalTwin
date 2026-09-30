@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Enterprise Architecture Case Study";
+}
+
+<div class="container mt-4">
+    <!-- Encabezado Principal -->
+    <div class="card shadow-sm border-primary mb-4">
+        <div class="card-body bg-primary text-white rounded">
+            <h2 class="card-title fw-bold mb-1"><i class="bi bi-shield-shaded me-2"></i> Enterprise Architecture Case Study</h2>
+            <p class="mb-0 text-white-50">Complete architectural walkthrough and step-by-step evaluation guide for a multi-tier corporate environment simulated within the Digital Twin Security Center.</p>
+        </div>
+    </div>
+
+    <!-- Sección 1: Topología Simulada -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title mb-0"><i class="bi bi-diagram-3 me-2"></i> Simulated Enterprise Topology (3-Tier Architecture)</h5>
+        </div>
+        <div class="card-body bg-light">
+            <p class="text-muted small mb-3">This scenario models a standard secure enterprise architecture distributed across three security zones and trust boundaries:</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card border-danger h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <span class="badge bg-danger mb-2">High Criticality / Perimeter</span>
+                            <h6 class="fw-bold">1. Perimeter-Firewall</h6>
+                            <p class="small text-muted mb-1">IP: <code>203.0.113.1</code></p>
+                            <p class="small text-muted mb-0">Exposes network perimeter, filters traffic, and routes incoming public requests.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-warning h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <span class="badge bg-warning text-dark mb-2">Standard Criticality / Internal</span>
+                            <h6 class="fw-bold">2. App-Backend-01</h6>
+                            <p class="small text-muted mb-1">IP: <code>10.0.0.50</code></p>
+                            <p class="small text-muted mb-0">Hosts API services and business logic with vulnerable components (e.g., Log4Shell).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-danger h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <span class="badge bg-danger mb-2">Mission Critical / Database</span>
+                            <h6 class="fw-bold">3. Core-Database-SQL</h6>
+                            <p class="small text-muted mb-1">IP: <code>10.0.0.100</code></p>
+                            <p class="small text-muted mb-0">Internal database storing sensitive corporate records and protected core data.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección 2: Guía Paso a Paso para la Evaluación (Más Especifica) -->
+    <div class="card shadow-sm border-success mb-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="card-title mb-0"><i class="bi bi-list-check me-2"></i> Step-by-Step Evaluation Guide for Judges</h5>
+        </div>
+        <div class="card-body">
+            <!-- Paso 1 -->
+            <div class="d-flex align-items-start mb-3 border-bottom pb-3">
+                <div class="flex-shrink-0 bg-success text-white rounded-circle p-2 px-3 fw-bold me-3">1</div>
+                <div class="flex-grow-1">
+                    <h6 class="fw-bold mb-1">Register Assets & Test the AI CVE Assistant</h6>
+                    <p class="small text-muted mb-2">Go to the <strong>Threat Simulator</strong>, use the <em>AI CVE Lookup</em> tool to query vulnerabilities in natural language, and deploy the three core components detailed above (Perimeter-Firewall, App-Backend-01, and Core-Database-SQL).</p>
+                </div>
+                <div class="ms-3">
+                    <a href="/Nodos/Simulacion" class="btn btn-outline-success btn-sm fw-bold">Open Simulator</a>
+                </div>
+            </div>
+
+            <!-- Paso 2 (Actualizado con instrucciones de conexión específicas) -->
+            <div class="d-flex align-items-start mb-3 border-bottom pb-3">
+                <div class="flex-shrink-0 bg-success text-white rounded-circle p-2 px-3 fw-bold me-3">2</div>
+                <div class="flex-grow-1">
+                    <h6 class="fw-bold mb-1">Configure Network Topology & Interconnections</h6>
+                    <p class="small text-muted mb-1">Navigate to the <strong>Topology Map</strong> and establish the explicit data pathways required for lateral movement evaluation:</p>
+                    <ul class="small text-dark mb-2">
+                        <li><strong>Link A (Perimeter Entry):</strong> Set <em>Source</em> to <code>Perimeter-Firewall</code> and <em>Target</em> to <code>App-Backend-01</code> via Protocol <code>TCP</code> on Port <code>443</code>. Click <em>Establish Connection</em>.</li>
+                        <li><strong>Link B (Internal Propagation):</strong> Set <em>Source</em> to <code>App-Backend-01</code> and <em>Target</em> to <code>Core-Database-SQL</code> via Protocol <code>TCP</code> on Port <code>5432</code>. Click <em>Establish Connection</em>.</li>
+                    </ul>
+                </div>
+                <div class="ms-3">
+                    <a href="/Nodos/NetworkMap" class="btn btn-outline-success btn-sm fw-bold">Open Map</a>
+                </div>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="d-flex align-items-start">
+                <div class="flex-shrink-0 bg-success text-white rounded-circle p-2 px-3 fw-bold me-3">3</div>
+                <div class="flex-grow-1">
+                    <h6 class="fw-bold mb-1">Execute the Threat Simulation & Review AI Report</h6>
+                    <p class="small text-muted mb-0">Return to the Threat Simulator, copy the automated attack vector below, paste it directly into the AI engine, and review the risk level, attack paths, and automated mitigations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección 3: Escenario de Prueba en 1 Clic -->
+    <div class="card shadow-sm border-danger mb-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="card-title mb-0"><i class="bi bi-terminal me-2"></i> One-Click Attack Scenario for Testing</h5>
+        </div>
+        <div class="card-body bg-light">
+            <p class="small text-muted mb-2">Copy this exact evaluation vector and run it in the Threat Simulator engine:</p>
+            <div class="p-3 bg-white border border-danger rounded text-danger font-monospace fw-bold">
+                Lateral movement attack exploiting the web backend to reach the core database from the perimeter firewall
+            </div>
+        </div>
+    </div>
+</div>
